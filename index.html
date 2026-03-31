@@ -12,7 +12,6 @@ body {
   text-align: center;
 }
 
-/* Loading screen */
 #loading {
   position: fixed;
   width: 100%;
@@ -24,7 +23,6 @@ body {
   font-size: 22px;
 }
 
-/* Main content */
 #main {
   display: none;
   margin-top: 100px;
@@ -39,21 +37,20 @@ button {
   cursor: pointer;
 }
 
-#yesBtn { background: #00c853; color: white; }
+#yesBtn { background: #00c853; }
 #noBtn { background: #d50000; color: white; }
 
 #msg {
   margin-top: 30px;
   font-size: 20px;
-  min-height: 60px;
+  min-height: 80px;
 }
-
 </style>
 </head>
 
 <body>
 
-<div id="loading">Loading something stupid... 😄</div>
+<div id="loading">Loading something for Meenu... 😄</div>
 
 <div id="main">
   <h2>Hey Meenu... you actually opened this 😄</h2>
@@ -65,18 +62,16 @@ button {
 </div>
 
 <audio id="bgm" loop>
-  <source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3">
+  <source src="music.mp3" type="audio/mpeg">
 </audio>
 
 <script>
 
-// Fake loading
 setTimeout(() => {
   document.getElementById("loading").style.display = "none";
   document.getElementById("main").style.display = "block";
 }, 2000);
 
-// Moving button
 function moveButton() {
   let btn = document.getElementById("noBtn");
   btn.style.position = "absolute";
@@ -84,27 +79,29 @@ function moveButton() {
   btn.style.left = Math.random() * window.innerWidth + "px";
 }
 
-// Typing effect
 function typeText(text, i = 0) {
   if (i < text.length) {
     document.getElementById("msg").innerHTML += text.charAt(i);
-    setTimeout(() => typeText(text, i + 1), 40);
+    setTimeout(() => typeText(text, i + 1), 35);
   }
 }
 
-// Start message
 function startMessage() {
   document.getElementById("msg").innerHTML = "";
 
-  let message = "Okay Meenu... I was actually planning to say something today.\n\n" +
-                "But then I realized... today is April 1st 😄\n\n" +
+  let message = "Okay Meenu...\n\n" +
+                "I was actually planning to say something today.\n\n" +
+                "But then I realized it's April 1st 😄\n\n" +
                 "So anything I say will sound like a joke.\n\n" +
                 "But still...\n\n" +
                 "I really enjoy talking to you.\n\n" +
-                "And yeah... this part isn’t a joke.";
+                "And yeah... I meant that.";
 
   typeText(message);
-  document.getElementById("bgm").play();
+
+  let music = document.getElementById("bgm");
+  music.volume = 0.5; // softer sound
+  music.play();
 }
 
 </script>
