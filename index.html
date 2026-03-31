@@ -10,22 +10,11 @@ body {
   background: black;
   color: white;
   text-align: center;
-}
-
-#loading {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  background: black;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 22px;
+  overflow: hidden;
 }
 
 #main {
-  display: none;
-  margin-top: 100px;
+  margin-top: 120px;
 }
 
 button {
@@ -41,21 +30,32 @@ button {
 #noBtn { background: #d50000; color: white; }
 
 #msg {
-  margin-top: 30px;
+  margin-top: 40px;
+  font-size: 22px;
+  min-height: 100px;
+}
+
+/* hearts animation */
+.heart {
+  position: absolute;
+  color: red;
   font-size: 20px;
-  min-height: 80px;
+  animation: float 4s linear infinite;
+}
+
+@keyframes float {
+  from { transform: translateY(100vh); opacity: 1; }
+  to { transform: translateY(-10vh); opacity: 0; }
 }
 </style>
 </head>
 
 <body>
 
-<div id="loading">Loading something for Meenu... 😄</div>
-
 <div id="main">
-  <h2>Hey Meenu... you actually opened this 😄</h2>
+  <h2>Meenu... this might be a mistake 😄</h2>
 
-  <button id="yesBtn" onclick="startMessage()">Click me</button>
+  <button id="yesBtn" onclick="startStory()">Click me</button>
   <button id="noBtn" onclick="moveButton()">Don't click</button>
 
   <p id="msg"></p>
@@ -67,11 +67,6 @@ button {
 
 <script>
 
-setTimeout(() => {
-  document.getElementById("loading").style.display = "none";
-  document.getElementById("main").style.display = "block";
-}, 2000);
-
 function moveButton() {
   let btn = document.getElementById("noBtn");
   btn.style.position = "absolute";
@@ -79,29 +74,62 @@ function moveButton() {
   btn.style.left = Math.random() * window.innerWidth + "px";
 }
 
-function typeText(text, i = 0) {
-  if (i < text.length) {
-    document.getElementById("msg").innerHTML += text.charAt(i);
-    setTimeout(() => typeText(text, i + 1), 35);
+function typeText(text, speed = 35, callback) {
+  let i = 0;
+  let msg = document.getElementById("msg");
+  msg.innerHTML = "";
+
+  function typing() {
+    if (i < text.length) {
+      msg.innerHTML += text.charAt(i);
+      i++;
+      setTimeout(typing, speed);
+    } else if (callback) {
+      setTimeout(callback, 1000);
+    }
   }
+  typing();
 }
 
-function startMessage() {
-  document.getElementById("msg").innerHTML = "";
-
-  let message = "Okay Meenu...\n\n" +
-                "I was actually planning to say something today.\n\n" +
-                "But then I realized it's April 1st 😄\n\n" +
-                "So anything I say will sound like a joke.\n\n" +
-                "But still...\n\n" +
-                "I really enjoy talking to you.\n\n" +
-                "And yeah... I meant that.";
-
-  typeText(message);
-
+function startStory() {
   let music = document.getElementById("bgm");
-  music.volume = 0.5; // softer sound
+  music.volume = 0.4;
   music.play();
+
+  typeText("Okay Meenu...\n\nI was actually planning to say something today.", 35, step2);
+}
+
+function step2() {
+  typeText("But then I remembered... it's April 1st 😄", 35, step3);
+}
+
+function step3() {
+  typeText("So anything I say today will sound like a joke...", 35, step4);
+}
+
+function step4() {
+  typeText("But still...\n\nI didn't want to completely hide it.", 35, step5);
+}
+
+function step5() {
+  typeText("I actually enjoy talking to you a lot.\n\nMore than I expected.", 35, finalStep);
+}
+
+function finalStep() {
+  typeText("And yeah...\n\nThis part isn't a joke.", 40);
+  startHearts();
+}
+
+function startHearts() {
+  setInterval(() => {
+    let heart = document.createElement("div");
+    heart.className = "heart";
+    heart.innerHTML = "❤️";
+    heart.style.left = Math.random() * 100 + "vw";
+    document.body.appendChild(heart);
+
+    setTimeout(() => heart.remove(), 4000);
+  }, 300);
 }
 
 </script>
