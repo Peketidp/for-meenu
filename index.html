@@ -5,29 +5,55 @@
 
 <style>
 body {
-  background: #111;
-  color: white;
+  margin: 0;
   font-family: Arial;
+  color: white;
   text-align: center;
   margin-top: 120px;
+
+  background: url("bg.jpg") no-repeat center center fixed;
+  background-size: cover;
+}
+
+/* dark overlay */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  z-index: -1;
+}
+
+#msg {
+  font-size: 22px;
+  opacity: 0;
+  transition: opacity 1s;
+  min-height: 80px;
+}
+
+/* butterflies */
+.butterfly {
+  position: absolute;
+  font-size: 20px;
+  animation: fly 4s linear forwards;
+}
+
+@keyframes fly {
+  0% { transform: translateY(100vh); opacity: 1; }
+  100% { transform: translateY(-10vh); opacity: 0; }
 }
 
 button {
   padding: 12px 25px;
   font-size: 18px;
-  margin-top: 20px;
   border-radius: 8px;
   border: none;
   background: #00c853;
   color: white;
   cursor: pointer;
-}
-
-#msg {
-  margin-top: 30px;
-  font-size: 20px;
-  opacity: 0;
-  transition: 1s;
 }
 </style>
 </head>
@@ -36,23 +62,88 @@ button {
 
 <h2>Meenu… should I say this today or not? 😄</h2>
 
-<button onclick="show()">Click to find out</button>
+<button onclick="startStory()">Click to find out</button>
 
 <p id="msg"></p>
 
+<audio id="bgm">
+  <source src="music.mp3" type="audio/mpeg">
+</audio>
+
 <script>
-function show() {
+
+let lines = [
+"I thought of saying something today…",
+"But then I realized it's April 1st 😄",
+"So you probably won’t take it seriously.",
+"Still… I enjoy talking to you.",
+"More than I expected.",
+"And yeah… I meant that."
+];
+
+let i = 0;
+
+function startStory() {
+  let music = document.getElementById("bgm");
+  music.volume = 0.5;
+  music.play();
+
+  showNext();
+}
+
+function showNext() {
   let msg = document.getElementById("msg");
 
-  msg.innerHTML =
-  "I thought of saying something today…<br><br>" +
-  "But then I realized it's April 1st 😄<br><br>" +
-  "So you probably won’t take it seriously.<br><br>" +
-  "Still… I enjoy talking to you.<br><br>" +
-  "More than I expected.";
+  if (i < lines.length) {
+    msg.innerHTML = lines[i];
+    msg.style.opacity = 1;
+
+    createButterflies();
+
+    setTimeout(() => {
+      msg.style.opacity = 0;
+      i++;
+      setTimeout(showNext, 1000);
+    }, 2500);
+
+  } else {
+    showFullMessage();
+  }
+}
+
+/* butterflies animation */
+function createButterflies() {
+  for (let j = 0; j < 5; j++) {
+    let b = document.createElement("div");
+    b.className = "butterfly";
+    b.innerHTML = "🦋";
+    b.style.left = Math.random() * 100 + "vw";
+    document.body.appendChild(b);
+
+    setTimeout(() => b.remove(), 4000);
+  }
+}
+
+/* final full message */
+function showFullMessage() {
+  let msg = document.getElementById("msg");
 
   msg.style.opacity = 1;
+  msg.innerHTML = `
+I thought of saying something today…
+
+But then I realized it's April 1st 😄
+
+So you probably won’t take it seriously.
+
+Still… I enjoy talking to you.
+
+More than I expected.
+
+And yeah… I meant that.
+`;
 }
+
 </script>
 
 </body>
