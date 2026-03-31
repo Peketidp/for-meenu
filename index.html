@@ -84,7 +84,7 @@ button {
 
 <div id="main">
 
-  <h2>Meenu... don't judge this 😄</h2>
+  <h2>Meenu... don’t judge this 😄</h2>
 
   <button id="yesBtn" onclick="startStory()">Click me</button>
   <button id="noBtn" onclick="moveButton()">Don't click</button>
@@ -100,13 +100,13 @@ button {
 
 <script>
 
-// loading
+// loading screen
 setTimeout(() => {
   document.getElementById("loading").style.display = "none";
   document.getElementById("main").style.display = "block";
 }, 2000);
 
-// move button
+// moving button
 function moveButton() {
   let btn = document.getElementById("noBtn");
   btn.style.position = "absolute";
@@ -114,7 +114,7 @@ function moveButton() {
   btn.style.left = Math.random() * window.innerWidth + "px";
 }
 
-// typing
+// typing effect
 function typeText(text, speed = 35, callback) {
   let i = 0;
   let msg = document.getElementById("msg");
@@ -147,7 +147,7 @@ function showChat(callback) {
   setTimeout(callback, 2500);
 }
 
-// story
+// start story
 function startStory() {
   let music = document.getElementById("bgm");
   music.volume = 0.4;
@@ -170,12 +170,46 @@ function step4() {
   typeText("More than I expected.", 35, finalStep);
 }
 
+// FINAL STEP (typing + full reveal)
 function finalStep() {
-  typeText("And yeah...\n\nThis part isn't a joke.", 40, showChoice);
+  typeText("And yeah...\n\nThis part isn't a joke.", 40, showFullMessage);
   startHearts();
 }
 
-// hearts
+// FULL MESSAGE REVEAL
+function showFullMessage() {
+
+  let msg = document.getElementById("msg");
+
+  setTimeout(() => {
+    msg.innerHTML = `
+Okay Meenu...
+
+I was actually planning to say something today.
+
+But then I remembered... it's April 1st 😄
+
+So anything I say today will sound like a joke.
+
+But still...
+
+I didn’t want to completely hide it.
+
+I really enjoy talking to you.
+
+More than I expected.
+
+And yeah...
+
+I meant every word.
+`;
+
+    showChoice();
+
+  }, 1500);
+}
+
+// hearts animation
 function startHearts() {
   setInterval(() => {
     let heart = document.createElement("div");
@@ -188,10 +222,9 @@ function startHearts() {
   }, 300);
 }
 
-// FINAL CHOICE
+// final choice
 function showChoice() {
   let msg = document.getElementById("msg");
-  msg.innerHTML += "\n\nSo... should I have said this or not? 😄\n";
 
   let yes = document.createElement("button");
   yes.innerText = "Yes 🙂";
@@ -201,6 +234,7 @@ function showChoice() {
   no.innerText = "No 😅";
   no.onclick = () => alert("Fair enough… I’ll blame April 1st then 😄");
 
+  msg.appendChild(document.createElement("br"));
   msg.appendChild(document.createElement("br"));
   msg.appendChild(yes);
   msg.appendChild(no);
