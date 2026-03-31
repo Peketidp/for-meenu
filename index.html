@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>April 1st</title>
+<style>
+body {
+  text-align: center;
+  font-family: Arial;
+  background: #111;
+  color: white;
+  margin-top: 100px;
+}
+button {
+  padding: 10px 20px;
+  font-size: 18px;
+}
+</style>
+</head>
+<body>
+
+<h2>Don't click this… it's probably a bad idea 😄</h2>
+
+<button onclick="showMessage()">Click anyway</button>
+
+<p id="msg" style="margin-top:20px;"></p>
+
+<script>
+function showMessage() {
+  document.getElementById("msg").innerHTML =
+  "I was going to say this directly… but today is April 1st.<br><br>So here it is: I actually enjoy talking to you more than I should 😄";
+}
+</script>
+
+</body>
+</html>
