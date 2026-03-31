@@ -9,20 +9,12 @@ body {
   font-family: Arial;
   color: white;
   text-align: center;
+
+  background: url("bg.jpg") no-repeat center center fixed;
+  background-size: cover;
 }
 
-/* video background */
-#bgVideo {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  z-index: -2;
-}
-
-/* dark overlay */
+/* overlay */
 body::before {
   content: "";
   position: fixed;
@@ -65,7 +57,7 @@ button {
 #noBtn { background: #d50000; color: white; }
 
 #msg {
-  font-size: 28px;
+  font-size: 30px;
   opacity: 0;
   transition: opacity 1s;
   min-height: 80px;
@@ -87,18 +79,13 @@ button {
 
 <body>
 
-<!-- VIDEO BACKGROUND -->
-<video autoplay muted loop playsinline id="bgVideo">
-  <source src="bg.mp4" type="video/mp4">
-</video>
-
 <div id="loading">Loading something for Meenu... 😄</div>
 
 <div id="main">
 
   <h2>Meenu… should I say this today or not? 😄</h2>
 
-  <p style="font-size:20px; opacity:0.9;">
+  <p style="font-size:22px; opacity:0.9;">
     don’t mute it… it’s better that way 😄
   </p>
 
@@ -115,7 +102,7 @@ button {
 
 <script>
 
-// loading screen
+// loading
 setTimeout(() => {
   document.getElementById("loading").style.display = "none";
   document.getElementById("main").style.display = "block";
@@ -169,7 +156,7 @@ function showNext() {
   }
 }
 
-// hearts burst
+// hearts burst (each line)
 function createHeartsBurst() {
   let emojis = ["❤️","💖","💕","💗","💓"];
 
@@ -184,7 +171,7 @@ function createHeartsBurst() {
   }
 }
 
-// continuous heart rain
+// continuous heart rain (final)
 function startHeartRain() {
   let emojis = ["❤️","💖","💕","💗","💓"];
 
