@@ -115,11 +115,16 @@ function moveButton() {
 // story lines
 let lines = [
 "I thought of saying something today…",
+  "",
 "But then I realized it's April 1st 😄",
+  "",
 "So you probably won’t take it seriously.",
+  "",
 "Still… I enjoy talking to you.",
+  "",
 "More than I expected.",
-"And yeah… I meant that."
+  "",
+"And yeah…this part isn’t a joke."
 ];
 
 let i = 0;
@@ -171,17 +176,12 @@ function showFullMessage() {
 
   msg.style.opacity = 1;
   msg.innerHTML = `
-I thought of saying something today…
-
-But then I realized it's April 1st 😄
-
-So you probably won’t take it seriously.
-
-Still… I enjoy talking to you.
-
-More than I expected.
-
-And yeah… I meant that.
+<div>I thought of saying something today…</div><br>
+<div>But then I realized it's April 1st 😄</div><br>
+<div>So you probably won’t take it seriously.</div><br>
+<div>Still… I enjoy talking to you.</div><br>
+<div>More than I expected.</div><br>
+<div>And yeah… this part isn’t a joke.</div>
 `;
 }
 
