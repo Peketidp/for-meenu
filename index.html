@@ -63,11 +63,11 @@ button {
   min-height: 80px;
 }
 
-/* butterflies */
-.butterfly {
+/* hearts */
+.heart {
   position: absolute;
-  font-size: 20px;
-  animation: fly 4s linear forwards;
+  font-size: 26px;
+  animation: fly 5s linear forwards;
 }
 
 @keyframes fly {
@@ -84,9 +84,10 @@ button {
 <div id="main">
 
   <h2>Meenu… should I say this today or not? 😄</h2>
-  <p style="font-size:22px; opacity:0.95;">
-  don’t mute it… it’s better that way 😄
-</p>
+
+  <p style="font-size:22px; opacity:0.9;">
+    don’t mute it… it’s better that way 😄
+  </p>
 
   <button id="yesBtn" onclick="startStory()">Click me</button>
   <button id="noBtn" onclick="moveButton()">Don't click</button>
@@ -101,7 +102,7 @@ button {
 
 <script>
 
-// loading screen
+// loading
 setTimeout(() => {
   document.getElementById("loading").style.display = "none";
   document.getElementById("main").style.display = "block";
@@ -117,17 +118,17 @@ function moveButton() {
 
 // story lines
 let lines = [
-"I thought of saying something today…",
-  "",
-"But then I realized it's April 1st 😄",
-  "",
-"So you probably won’t take it seriously.",
-  "",
-"Still… I enjoy talking to you.",
-  "",
-"More than I expected.",
-  "",
-"And yeah…this part isn’t a joke."
+  "I thought of saying something today…",
+  " ",
+  "But then I realized it's April 1st 😄",
+   " ",
+  "So you probably won’t take it seriously.",
+   " ",
+  "Still… I enjoy talking to you.",
+   " ",
+  "More than I expected.",
+   " ",
+  "And yeah… this part isn’t a joke."
 ];
 
 let i = 0;
@@ -147,7 +148,7 @@ function showNext() {
     msg.innerHTML = lines[i];
     msg.style.opacity = 1;
 
-    createButterflies();
+    createHeartsBurst();
 
     setTimeout(() => {
       msg.style.opacity = 0;
@@ -160,17 +161,34 @@ function showNext() {
   }
 }
 
-// butterflies
-function createButterflies() {
-  for (let j = 0; j < 5; j++) {
-    let b = document.createElement("div");
-    b.className = "butterfly";
-    b.innerHTML = "🦋";
-    b.style.left = Math.random() * 100 + "vw";
-    document.body.appendChild(b);
+// hearts burst (each line)
+function createHeartsBurst() {
+  let emojis = ["❤️","💖","💕","💗","💓"];
 
-    setTimeout(() => b.remove(), 4000);
+  for (let j = 0; j < 8; j++) {
+    let heart = document.createElement("div");
+    heart.className = "heart";
+    heart.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
+    heart.style.left = Math.random() * 100 + "vw";
+    document.body.appendChild(heart);
+
+    setTimeout(() => heart.remove(), 4000);
   }
+}
+
+// continuous heart rain (final)
+function startHeartRain() {
+  let emojis = ["❤️","💖","💕","💗","💓"];
+
+  setInterval(() => {
+    let heart = document.createElement("div");
+    heart.className = "heart";
+    heart.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
+    heart.style.left = Math.random() * 100 + "vw";
+    document.body.appendChild(heart);
+
+    setTimeout(() => heart.remove(), 4000);
+  }, 200);
 }
 
 // final message
@@ -178,19 +196,22 @@ function showFullMessage() {
   let msg = document.getElementById("msg");
 
   msg.style.opacity = 1;
+
   msg.innerHTML = `
-<div>I thought of saying something today…</div><br>
-<div><div> 💕 </div><br></div><br>
-<div>But then I realized it's April 1st 😄</div><br>
-<div><div> 💕 </div><br></div><br>
-<div>So you probably won’t take it seriously.</div><br>
-<div><div> 💕 </div><br></div><br>
-<div>Still… I enjoy talking to you.</div><br>
-<div><div> 💕 </div><br></div><br>
-<div>More than I expected.</div><br>
-<div><div> 💕 </div><br></div><br>
-<div>And yeah…… this part isn’t a joke.</div>
+I thought of saying something today…<br><br>
+
+But then I realized it's April 1st 😄<br><br>
+
+So you probably won’t take it seriously.<br><br>
+
+Still… I enjoy talking to you.<br><br>
+
+More than I expected.<br><br>
+
+And yeah… this part isn’t a joke ❤️ I meant it.
 `;
+
+  startHeartRain();
 }
 
 </script>
