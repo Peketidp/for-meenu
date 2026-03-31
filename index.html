@@ -5,241 +5,54 @@
 
 <style>
 body {
-  margin: 0;
-  font-family: Arial;
-  background: #0d0d0d;
+  background: #111;
   color: white;
+  font-family: Arial;
   text-align: center;
-  overflow: hidden;
-}
-
-/* Loading */
-#loading {
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  background: black;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 22px;
-}
-
-/* Main */
-#main {
-  display: none;
-  margin-top: 100px;
+  margin-top: 120px;
 }
 
 button {
   padding: 12px 25px;
   font-size: 18px;
-  margin: 10px;
+  margin-top: 20px;
   border-radius: 8px;
   border: none;
+  background: #00c853;
+  color: white;
   cursor: pointer;
 }
 
-#yesBtn { background: #00c853; }
-#noBtn { background: #d50000; color: white; }
-
 #msg {
-  margin-top: 40px;
-  font-size: 22px;
-  min-height: 120px;
-  white-space: pre-line;
-}
-
-/* Fake chat */
-#chat {
-  display: none;
-  margin: 20px;
-}
-
-.bubble {
-  background: #1f1f1f;
-  padding: 10px;
-  margin: 8px;
-  border-radius: 10px;
-}
-
-/* Hearts */
-.heart {
-  position: absolute;
-  color: red;
+  margin-top: 30px;
   font-size: 20px;
-  animation: float 4s linear infinite;
-}
-
-@keyframes float {
-  from { transform: translateY(100vh); opacity: 1; }
-  to { transform: translateY(-10vh); opacity: 0; }
+  opacity: 0;
+  transition: 1s;
 }
 </style>
 </head>
 
 <body>
 
-<div id="loading">Loading something for Meenu... 😄</div>
+<h2>Meenu… should I say this today or not? 😄</h2>
 
-<div id="main">
+<button onclick="show()">Click to find out</button>
 
-  <h2>Meenu... don’t judge this 😄</h2>
-
-  <button id="yesBtn" onclick="startStory()">Click me</button>
-  <button id="noBtn" onclick="moveButton()">Don't click</button>
-
-  <div id="chat"></div>
-  <p id="msg"></p>
-
-</div>
-
-<audio id="bgm" loop>
-  <source src="music.mp3">
-</audio>
+<p id="msg"></p>
 
 <script>
-
-// loading screen
-setTimeout(() => {
-  document.getElementById("loading").style.display = "none";
-  document.getElementById("main").style.display = "block";
-}, 2000);
-
-// moving button
-function moveButton() {
-  let btn = document.getElementById("noBtn");
-  btn.style.position = "absolute";
-  btn.style.top = Math.random() * window.innerHeight + "px";
-  btn.style.left = Math.random() * window.innerWidth + "px";
-}
-
-// typing effect
-function typeText(text, speed = 35, callback) {
-  let i = 0;
-  let msg = document.getElementById("msg");
-  msg.innerHTML = "";
-
-  function typing() {
-    if (i < text.length) {
-      msg.innerHTML += text.charAt(i);
-      i++;
-      setTimeout(typing, speed);
-    } else if (callback) {
-      setTimeout(callback, 1200);
-    }
-  }
-  typing();
-}
-
-// fake chat
-function showChat(callback) {
-  let chat = document.getElementById("chat");
-  chat.style.display = "block";
-
-  chat.innerHTML = `
-    <div class="bubble">Hey Meenu 😄</div>
-    <div class="bubble">I wanted to tell you something...</div>
-    <div class="bubble">But today is April 1st 😑</div>
-    <div class="bubble">So you'll think it's a joke...</div>
-  `;
-
-  setTimeout(callback, 2500);
-}
-
-// start story
-function startStory() {
-  let music = document.getElementById("bgm");
-  music.volume = 0.4;
-  music.play();
-
-  showChat(() => {
-    typeText("So I thought...\n\nMaybe I shouldn't say it directly.", 35, step2);
-  });
-}
-
-function step2() {
-  typeText("But ignoring it felt worse...", 35, step3);
-}
-
-function step3() {
-  typeText("Because honestly...\n\nI really enjoy talking to you.", 35, step4);
-}
-
-function step4() {
-  typeText("More than I expected.", 35, finalStep);
-}
-
-// FINAL STEP (typing + full reveal)
-function finalStep() {
-  typeText("And yeah...\n\nThis part isn't a joke.", 40, showFullMessage);
-  startHearts();
-}
-
-// FULL MESSAGE REVEAL
-function showFullMessage() {
-
+function show() {
   let msg = document.getElementById("msg");
 
-  setTimeout(() => {
-    msg.innerHTML = `
-Okay Meenu...
+  msg.innerHTML =
+  "I thought of saying something today…<br><br>" +
+  "But then I realized it's April 1st 😄<br><br>" +
+  "So you probably won’t take it seriously.<br><br>" +
+  "Still… I enjoy talking to you.<br><br>" +
+  "More than I expected.";
 
-I was actually planning to say something today.
-
-But then I remembered... it's April 1st 😄
-
-So anything I say today will sound like a joke.
-
-But still...
-
-I didn’t want to completely hide it.
-
-I really enjoy talking to you.
-
-More than I expected.
-
-And yeah...
-
-I meant every word.
-`;
-
-    showChoice();
-
-  }, 1500);
+  msg.style.opacity = 1;
 }
-
-// hearts animation
-function startHearts() {
-  setInterval(() => {
-    let heart = document.createElement("div");
-    heart.className = "heart";
-    heart.innerHTML = "❤️";
-    heart.style.left = Math.random() * 100 + "vw";
-    document.body.appendChild(heart);
-
-    setTimeout(() => heart.remove(), 4000);
-  }, 300);
-}
-
-// final choice
-function showChoice() {
-  let msg = document.getElementById("msg");
-
-  let yes = document.createElement("button");
-  yes.innerText = "Yes 🙂";
-  yes.onclick = () => alert("Okay… then maybe I’ll say more next time 😄");
-
-  let no = document.createElement("button");
-  no.innerText = "No 😅";
-  no.onclick = () => alert("Fair enough… I’ll blame April 1st then 😄");
-
-  msg.appendChild(document.createElement("br"));
-  msg.appendChild(document.createElement("br"));
-  msg.appendChild(yes);
-  msg.appendChild(no);
-}
-
 </script>
 
 </body>
