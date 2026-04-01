@@ -11,14 +11,15 @@ body {
   text-align: center;
   background: url("bg.jpeg") no-repeat center center fixed;
   background-size: cover;
+  overflow-x: hidden; /* FIX */
 }
 
+/* ✅ FIXED OVERLAY */
 body::before {
   content: "";
   position: fixed;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.6);
+  inset: 0; /* better than width/height */
+  background: rgba(0,0,0,0.5);
   z-index: -1;
 }
 
@@ -108,7 +109,11 @@ button {
 <!-- LOADING -->
 <div id="loading">
   <span>Loading something for Meenu... 😄</span>
-  <p style="font-size:18px;">While you wait… catch the hearts if you can ❤️</p>
+
+  <p style="font-size:18px; opacity:0.85;">
+    While you wait… catch the hearts if you can 😁❤️
+  </p>
+
   <span id="countdown"></span>
 </div>
 
@@ -178,7 +183,7 @@ function moveButton() {
   noBtn.style.left = Math.random() * window.innerWidth + "px";
 }
 
-// HEART RAIN DURING STORY
+// STORY + HEART RAIN
 function createHeartsRain() {
   let emojis = ["❤️","💖","💕","💗","🦋"];
 
@@ -192,7 +197,7 @@ function createHeartsRain() {
     document.body.appendChild(h);
 
     h.animate([
-      { transform: "translateY(100vh)", opacity: 1 },
+      { transform: "translateY(100vh)" },
       { transform: "translateY(-10vh)", opacity: 0 }
     ], { duration: 3000 });
 
@@ -200,7 +205,6 @@ function createHeartsRain() {
   }
 }
 
-// STORY
 let lines = [
 "I thought of saying something today…",
 "But then I realized it's April 1st 😄",
@@ -235,7 +239,7 @@ function next() {
   }
 }
 
-// FINAL FULL MESSAGE
+// FINAL MESSAGE
 function endMsg() {
   msg.style.opacity = 1;
 
@@ -265,7 +269,7 @@ function startLaughRain() {
     document.body.appendChild(e);
 
     e.animate([
-      { transform: "translateY(100vh)", opacity: 1 },
+      { transform: "translateY(100vh)" },
       { transform: "translateY(-10vh)", opacity: 0 }
     ], { duration: 3000 });
 
@@ -299,7 +303,7 @@ function startFinalEffect() {
     document.body.appendChild(e);
 
     e.animate([
-      { transform: "translateY(100vh)", opacity: 1 },
+      { transform: "translateY(100vh)" },
       { transform: "translateY(-10vh)", opacity: 0 }
     ], { duration: 4000 });
 
