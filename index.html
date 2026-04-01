@@ -9,7 +9,6 @@ body {
   font-family: Arial;
   color: white;
   text-align: center;
-
   background: url("bg.jpeg") no-repeat center center fixed;
   background-size: cover;
 }
@@ -26,6 +25,26 @@ body::before {
   z-index: -1;
 }
 
+/* popup */
+#popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0,0,0,0.7);
+  z-index: 3000;
+}
+
+#popupBox {
+  background: #222;
+  padding: 30px;
+  border-radius: 12px;
+}
+
 /* loading */
 #loading {
   position: fixed;
@@ -40,7 +59,6 @@ body::before {
   z-index: 1000;
 }
 
-/* main */
 #main {
   display: none;
   margin-top: 120px;
@@ -73,7 +91,7 @@ button {
 }
 
 @keyframes fly {
-  0% { transform: translateY(100vh); opacity: 1; }
+  0% { transform: translateY(100vh); }
   100% { transform: translateY(-10vh); opacity: 0; }
 }
 
@@ -83,22 +101,17 @@ button {
   font-size: 50px;
   cursor: pointer;
   z-index: 1500;
-  user-select: none;
-  touch-action: manipulation;
 }
 
-/* red flash */
+/* flash */
 #flash {
   position: fixed;
-  top: 0;
-  left: 0;
   width: 100%;
   height: 100%;
   background: red;
   opacity: 0;
   z-index: 2000;
   pointer-events: none;
-  transition: opacity 0.3s;
 }
 </style>
 </head>
@@ -107,244 +120,155 @@ button {
 
 <div id="flash"></div>
 
+<!-- POPUP -->
+<div id="popup">
+  <div id="popupBox">
+    <h3>One last thing… 🎁</h3>
+    <button onclick="showBirthday()">Open it 😄</button>
+  </div>
+</div>
+
 <!-- LOADING -->
 <div id="loading">
   <span>Loading something for Meenu... 😄</span>
-
-  <p style="font-size:18px; opacity:0.85; margin-top:10px;">
-    While you wait… catch the hearts if you can 😁❤️
-  </p>
-
-  <span id="countdown" style="font-size:20px; margin-top:10px;"></span>
+  <p style="font-size:18px;">While you wait… catch the hearts  if you can❤️</p>
+  <span id="countdown"></span>
 </div>
 
 <div id="main">
-
   <h2>Meenu… should I say this today or not? 😄</h2>
-
-  <p style="font-size:20px; opacity:0.9;">
-    don’t mute it… it’s better that way 🔇
-  </p>
-
-  <button id="yesBtn" onclick="startStory()">Click me</button>
-  <button id="noBtn" onclick="moveButton()">Don't click</button>
-
+  <button onclick="startStory()">Click me</button>
+  <button onclick="moveButton()">Don't click</button>
   <p id="msg"></p>
-
 </div>
 
 <audio id="bgm">
-  <source src="music.mp3" type="audio/mpeg">
+  <source src="music.mp3">
 </audio>
 
 <script>
 
-// ⏳ TIMER
-let timeLeft = 20;
-
-let countdown = setInterval(() => {
-  document.getElementById("countdown").innerHTML =
-    "Wait a moment… " + timeLeft + "s ⏳";
-
-  timeLeft--;
-
-  if (timeLeft < 0) {
-    clearInterval(countdown);
-    clearInterval(gameInterval);
-
-    document.getElementById("loading").style.display = "none";
-    document.getElementById("main").style.display = "block";
+// timer
+let t=20;
+let c=setInterval(()=>{
+  countdown.innerHTML="Wait a moment… "+t+"s ⏳";
+  t--;
+  if(t<0){
+    clearInterval(c);
+    clearInterval(game);
+    loading.style.display="none";
+    main.style.display="block";
   }
-}, 1000);
+},1000);
 
-// 🎮 GAME
-function spawnPopHeart() {
-  let heart = document.createElement("div");
-  heart.className = "popHeart";
-  heart.innerHTML = "❤️";
+// game
+function spawn(){
+  let h=document.createElement("div");
+  h.className="popHeart";
+  h.innerHTML="❤️";
+  h.style.left=Math.random()*90+"vw";
+  h.style.top=Math.random()*90+"vh";
 
-  heart.style.left = Math.random() * 90 + "vw";
-  heart.style.top = Math.random() * 90 + "vh";
-
-  function popEffect() {
-    heart.innerHTML = "💥";
-    heart.style.transform = "scale(1.5)";
-
-    let flash = document.getElementById("flash");
-    flash.style.opacity = 0.7;
-
-    setTimeout(() => {
-      flash.style.opacity = 0;
-    }, 2000);
-
-    setTimeout(() => heart.remove(), 200);
+  function pop(){
+    h.innerHTML="💥";
+    flash.style.opacity=0.7;
+    setTimeout(()=>flash.style.opacity=0,2000);
+    setTimeout(()=>h.remove(),200);
   }
 
-  heart.addEventListener("click", popEffect);
-  heart.addEventListener("touchstart", popEffect);
+  h.onclick=pop;
+  h.ontouchstart=pop;
 
-  document.body.appendChild(heart);
+  document.body.appendChild(h);
+  setTimeout(()=>h.remove(),4000);
+}
+let game=setInterval(spawn,600);
 
-  setTimeout(() => heart.remove(), 4000);
+// move button
+function moveButton(){
+  noBtn.style.position="absolute";
+  noBtn.style.top=Math.random()*window.innerHeight+"px";
+  noBtn.style.left=Math.random()*window.innerWidth+"px";
 }
 
-let gameInterval = setInterval(spawnPopHeart, 600);
-
-// 😂 moving button
-function moveButton() {
-  let btn = document.getElementById("noBtn");
-  btn.style.position = "absolute";
-  btn.style.top = Math.random() * window.innerHeight + "px";
-  btn.style.left = Math.random() * window.innerWidth + "px";
-}
-
-// 💬 STORY
-let lines = [
-  "I thought of saying something today…",
-  "But then I realized it's April 1st 😄",
-  "So you probably won’t take it seriously.",
-  "Still… I enjoy talking to you.",
-  "More than I expected.",
-  "And yeah… this part isn’t a joke."
+// story
+let lines=[
+"I thought of saying something today…",
+"But then I realized it's April 1st 😄",
+"So you probably won’t take it seriously.",
+"Still… I enjoy talking to you.",
+"More than I expected.",
+"And yeah… this part isn’t a joke."
 ];
+let i=0;
 
-let i = 0;
-
-function startStory() {
-  let music = document.getElementById("bgm");
-  music.volume = 0.5;
-  music.play();
-
-  showNext();
+function startStory(){
+  bgm.play();
+  next();
 }
 
-function showNext() {
-  let msg = document.getElementById("msg");
-
-  if (i < lines.length) {
-    msg.innerHTML = lines[i];
-    msg.style.opacity = 1;
-
-    createHeartsBurst();
-
-    setTimeout(() => {
-      msg.style.opacity = 0;
+function next(){
+  if(i<lines.length){
+    msg.innerHTML=lines[i];
+    msg.style.opacity=1;
+    setTimeout(()=>{
+      msg.style.opacity=0;
       i++;
-      setTimeout(showNext, 1000);
-    }, 2500);
-
-  } else {
-    showFullMessage();
+      setTimeout(next,1000);
+    },2500);
+  }else{
+    endMsg();
   }
 }
 
-// ❤️ burst
-function createHeartsBurst() {
-  let emojis = ["❤️","💖","💕","💗","💓","🦋"];
-
-  for (let j = 0; j < 8; j++) {
-    let heart = document.createElement("div");
-    heart.className = "heart";
-    heart.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
-    heart.style.left = Math.random() * 100 + "vw";
-    document.body.appendChild(heart);
-
-    setTimeout(() => heart.remove(), 4000);
-  }
+// end message
+function endMsg(){
+  msg.style.opacity=1;
+  msg.innerHTML=`
+  And yeah… this part isn’t a joke ❤️<br><br>
+  <button onclick="aprilFool()">One more thing 😄</button>
+  `;
 }
 
-// 🌧️ rain
-function startHeartRain() {
-  let emojis = ["❤️","💖","💕","💗","💓","🦋","🦋"];
-
-  setInterval(() => {
-    let heart = document.createElement("div");
-    heart.className = "heart";
-    heart.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
-    heart.style.left = Math.random() * 100 + "vw";
-    document.body.appendChild(heart);
-
-    setTimeout(() => heart.remove(), 4000);
-  }, 200);
+// fool
+function aprilFool(){
+  msg.innerHTML=`
+  APRIL FOOL 😂😂😂<br><br>
+  but I meant some of it 😄
+  `;
+  popup.style.display="flex"; // show popup
 }
 
-// 🤣 LOL rain
-function startLaughRain() {
-  let emojis = ["😂","🤣","😆","😜","😝"];
+// birthday
+function showBirthday(){
+  popup.style.display="none";
 
-  setInterval(() => {
-    let e = document.createElement("div");
-    e.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
-    e.style.position = "absolute";
-    e.style.fontSize = "40px";
-    e.style.left = Math.random() * 100 + "vw";
-
-    document.body.appendChild(e);
-
-    e.animate([
-      { transform: "translateY(100vh)", opacity: 1 },
-      { transform: "translateY(-10vh)", opacity: 0 }
-    ], {
-      duration: 3000,
-      easing: "linear"
-    });
-
-    setTimeout(() => e.remove(), 3000);
-
-  }, 150);
-}
-
-// 💥 FINAL MESSAGE
-function showFullMessage() {
-  let msg = document.getElementById("msg");
-
-  msg.style.opacity = 1;
-
-  msg.innerHTML = `
-I thought of saying something today…<br><br>
-
-But then I realized it's April 1st 😄<br><br>
-
-So you probably won’t take it seriously.<br><br>
-
-Still… I enjoy talking to you.<br><br>
-
-More than I expected.<br><br>
-
-And yeah… this part isn’t a joke ❤️ I meant it.<br><br>
-
-<button onclick="aprilFool()" style="
-  padding:10px 20px;
-  font-size:18px;
-  border:none;
-  border-radius:8px;
-  background:#ff4081;
-  color:white;
-  cursor:pointer;
-">
-  One more thing 😘
-</button>
-`;
-
-  startHeartRain();
-}
-
-// 😈 APRIL FOOL
-function aprilFool() {
-  let msg = document.getElementById("msg");
-
-  msg.innerHTML = `
-  <div style="font-size:40px; font-weight:bold;">
-    okay okay…<br>
-    APRIL FOOL 😂😂😂<br>
-    but I meant some of it 😄
-  </div>
+  msg.innerHTML=`
+  🎁 Advance Happy Birthday Meenluu🤪 🎂❤️<br><br>
+  <div id="bday"></div>
   `;
 
-  startLaughRain();
+  let target=new Date();
+  target.setMonth(3);target.setDate(4);
+
+  let timer=setInterval(()=>{
+    let d=new Date();
+    let diff=target-d;
+
+    let days=Math.floor(diff/(1000*60*60*24));
+    let h=Math.floor((diff/(1000*60*60))%24);
+    let m=Math.floor((diff/(1000*60))%60);
+    let s=Math.floor((diff/1000)%60);
+
+    bday.innerHTML=days+"d "+h+"h "+m+"m "+s+"s";
+
+    if(diff<0){
+      clearInterval(timer);
+      bday.innerHTML="🎉 Happy Birthday ❤️";
+    }
+  },1000);
 }
 
 </script>
-
 </body>
 </html>
