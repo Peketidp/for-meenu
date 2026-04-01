@@ -65,7 +65,7 @@ button {
   min-height: 80px;
 }
 
-/* hearts animation */
+/* hearts */
 .heart {
   position: absolute;
   font-size: 26px;
@@ -157,7 +157,7 @@ let countdown = setInterval(() => {
   }
 }, 1000);
 
-// 🎮 GAME (fixed)
+// 🎮 GAME
 function spawnPopHeart() {
   let heart = document.createElement("div");
   heart.className = "popHeart";
@@ -198,24 +198,18 @@ function moveButton() {
   btn.style.left = Math.random() * window.innerWidth + "px";
 }
 
-// 💬 story
+// 💬 STORY
 let lines = [
   "I thought of saying something today…",
-  " ",
   "But then I realized it's April 1st 😄",
-  " ",
   "So you probably won’t take it seriously.",
-  " ",
   "Still… I enjoy talking to you.",
-  " ",
   "More than I expected.",
-  " ",
   "And yeah… this part isn’t a joke."
 ];
 
 let i = 0;
 
-// 🎵 start
 function startStory() {
   let music = document.getElementById("bgm");
   music.volume = 0.5;
@@ -274,7 +268,33 @@ function startHeartRain() {
   }, 200);
 }
 
-// 💥 final
+// 🤣 LOL rain
+function startLaughRain() {
+  let emojis = ["😂","🤣","😆","😜","😝"];
+
+  setInterval(() => {
+    let e = document.createElement("div");
+    e.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
+    e.style.position = "absolute";
+    e.style.fontSize = "40px";
+    e.style.left = Math.random() * 100 + "vw";
+
+    document.body.appendChild(e);
+
+    e.animate([
+      { transform: "translateY(100vh)", opacity: 1 },
+      { transform: "translateY(-10vh)", opacity: 0 }
+    ], {
+      duration: 3000,
+      easing: "linear"
+    });
+
+    setTimeout(() => e.remove(), 3000);
+
+  }, 150);
+}
+
+// 💥 FINAL MESSAGE
 function showFullMessage() {
   let msg = document.getElementById("msg");
 
@@ -291,10 +311,37 @@ Still… I enjoy talking to you.<br><br>
 
 More than I expected.<br><br>
 
-And yeah… this part isn’t a joke ❤️ I meant it.
+And yeah… this part isn’t a joke ❤️ I meant it.<br><br>
+
+<button onclick="aprilFool()" style="
+  padding:10px 20px;
+  font-size:18px;
+  border:none;
+  border-radius:8px;
+  background:#ff4081;
+  color:white;
+  cursor:pointer;
+">
+  One more thing 😘
+</button>
 `;
 
   startHeartRain();
+}
+
+// 😈 APRIL FOOL
+function aprilFool() {
+  let msg = document.getElementById("msg");
+
+  msg.innerHTML = `
+  <div style="font-size:40px; font-weight:bold;">
+    okay okay…<br>
+    APRIL FOOL 😂😂😂<br>
+    but I meant some of it 😄
+  </div>
+  `;
+
+  startLaughRain();
 }
 
 </script>
