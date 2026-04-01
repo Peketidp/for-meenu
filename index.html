@@ -11,19 +11,17 @@ body {
   text-align: center;
   background: url("bg.jpeg") no-repeat center center fixed;
   background-size: cover;
-  overflow-x: hidden; /* FIX */
+  overflow-x: hidden;
 }
 
-/* ✅ FIXED OVERLAY */
 body::before {
   content: "";
   position: fixed;
-  inset: 0; /* better than width/height */
+  inset: 0;
   background: rgba(0,0,0,0.5);
   z-index: -1;
 }
 
-/* loading */
 #loading {
   position: fixed;
   width: 100%;
@@ -37,7 +35,6 @@ body::before {
   z-index: 1000;
 }
 
-/* popup */
 #popup {
   display: none;
   position: fixed;
@@ -49,7 +46,6 @@ body::before {
   z-index: 3000;
 }
 
-/* main */
 #main {
   display: none;
   margin-top: 120px;
@@ -73,7 +69,6 @@ button {
   transition: opacity 1s;
 }
 
-/* game hearts */
 .popHeart {
   position: fixed;
   font-size: 50px;
@@ -81,12 +76,11 @@ button {
   z-index: 1500;
 }
 
-/* flash */
 #flash {
   position: fixed;
   width: 100%;
   height: 100%;
-  background: red;
+  background: pink;
   opacity: 0;
   z-index: 2000;
   pointer-events: none;
@@ -110,11 +104,16 @@ button {
 <div id="loading">
   <span>Loading something for Meenu... 😄</span>
 
-  <p style="font-size:18px; opacity:0.85;">
-    While you wait… catch the hearts if you can 😁❤️
+  <p style="font-size:18px;">
+    While you wait… catch the hearts if you can ❤️
   </p>
 
   <span id="countdown"></span>
+
+  <!-- ✅ SCORE ADDED -->
+  <div id="score" style="font-size:20px; margin-top:10px;">
+    Hearts popped: 0 ❤️
+  </div>
 </div>
 
 <div id="main">
@@ -122,21 +121,24 @@ button {
   <h2>Meenu… should I say this today or not? 😄</h2>
 
   <p style="font-size:18px; opacity:0.8;">
-    plug in your earphones… for better experience 🎧
+    plug in your earphones… for better experience🎧
   </p>
 
-  <button id="yesBtn" onclick="startStory()">Click me</button>
+  <button id="yesBtn" onclick="startStory()">🎵 Click me</button>
   <button id="noBtn" onclick="moveButton()">Don't click</button>
 
   <p id="msg"></p>
 
 </div>
 
-<audio id="bgm">
-  <source src="music.mp3">
+<audio id="bgm" preload="auto">
+  <source src="music.mp3" type="audio/mpeg">
 </audio>
 
 <script>
+
+// ✅ SCORE VARIABLE
+let score = 0;
 
 // TIMER
 let t = 20;
@@ -148,6 +150,10 @@ let c = setInterval(() => {
     clearInterval(game);
     loading.style.display = "none";
     main.style.display = "block";
+
+    // ✅ SHOW FINAL SCORE
+    msg.style.opacity = 1;
+    msg.innerHTML = "😄 You popped " + score + " hearts ❤️";
   }
 }, 1000);
 
@@ -162,6 +168,13 @@ function spawn() {
 
   function pop() {
     h.innerHTML = "💥";
+
+    // ✅ INCREMENT SCORE
+    score++;
+
+    document.getElementById("score").innerHTML =
+      "Hearts popped: " + score + " ❤️";
+
     flash.style.opacity = 0.7;
     setTimeout(() => flash.style.opacity = 0, 2000);
     setTimeout(() => h.remove(), 200);
@@ -183,9 +196,9 @@ function moveButton() {
   noBtn.style.left = Math.random() * window.innerWidth + "px";
 }
 
-// STORY + HEART RAIN
+// HEART RAIN
 function createHeartsRain() {
-  let emojis = ["❤️","💖","💕","💗","🦋"];
+  let emojis = ["❤️","💖","💕","💗"];
 
   for (let j = 0; j < 6; j++) {
     let h = document.createElement("div");
@@ -205,6 +218,7 @@ function createHeartsRain() {
   }
 }
 
+// STORY
 let lines = [
 "I thought of saying something today…",
 "But then I realized it's April 1st 😄",
@@ -217,7 +231,9 @@ let lines = [
 let i = 0;
 
 function startStory() {
-  bgm.play();
+  let music = document.getElementById("bgm");
+  music.volume = 0.6;
+  music.play().catch(()=>{});
   next();
 }
 
@@ -245,10 +261,15 @@ function endMsg() {
 
   msg.innerHTML = `
 I thought of saying something today…<br><br>
+
 But then I realized it's April 1st 😄<br><br>
+
 So you probably won’t take it seriously.<br><br>
+
 Still… I enjoy talking to you.<br><br>
+
 More than I expected.<br><br>
+
 And yeah… this part isn’t a joke ❤️ I meant it.<br><br>
 
 <button onclick="aprilFool()">One more thing 😄</button>
