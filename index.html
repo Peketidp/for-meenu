@@ -3,7 +3,7 @@
 <head>
 <title>For Meenu 🎬</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
 body {
@@ -11,39 +11,71 @@ body {
   font-family: 'Poppins', sans-serif;
   background: black;
   color: white;
-  overflow: hidden;
 }
 
-/* HERO */
-#hero {
-  height: 100vh;
-  background:
-    linear-gradient(to top, black 20%, transparent 60%),
-    linear-gradient(to right, black 30%, transparent 70%),
-    url("bg.jpg") center/cover no-repeat;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-#playBtn {
-  padding: 15px 30px;
-  font-size: 20px;
-  background: white;
-  border: none;
-  cursor: pointer;
-  border-radius: 5px;
-}
-
-/* LOADING */
-#loading {
+/* INTRO */
+#intro {
   position: fixed;
   inset: 0;
   background: black;
-  display: none;
+  display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 22px;
+  font-size: 40px;
+  color: red;
+  letter-spacing: 3px;
+  z-index: 999;
+}
+
+/* PROFILE SCREEN */
+#profiles {
+  display: none;
+  height: 100vh;
+  text-align: center;
+  padding-top: 100px;
+  position: relative;
+
+  background:
+    linear-gradient(to top, black 30%, transparent 80%),
+    linear-gradient(to bottom, rgba(0,0,0,0.7), rgba(0,0,0,0.9)),
+    url("bg.jpg") center/cover no-repeat;
+}
+
+/* BLUR EFFECT */
+#profiles::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  backdrop-filter: blur(8px);
+  z-index: -1;
+}
+
+.profile-container {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin-top: 50px;
+}
+
+.profile {
+  cursor: pointer;
+  text-align: center;
+}
+
+.profile img {
+  width: 110px;
+  height: 110px;
+  border-radius: 10px;
+  transition: 0.3s;
+}
+
+.profile:hover img {
+  transform: scale(1.1);
+}
+
+.name {
+  margin-top: 10px;
+  font-size: 18px;
 }
 
 /* PLAYER */
@@ -51,7 +83,6 @@ body {
   display: none;
   position: relative;
   height: 100vh;
-  width: 100%;
 }
 
 /* VIDEO */
@@ -60,8 +91,15 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  opacity: 0;
-  transition: opacity 1s ease;
+}
+
+/* OVERLAY */
+#overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to top, black 20%, transparent 60%),
+    linear-gradient(to right, black 25%, transparent 70%);
 }
 
 /* SUBTITLE */
@@ -70,9 +108,9 @@ body {
   bottom: 80px;
   width: 100%;
   text-align: center;
-  font-size: 26px;
+  font-size: 28px;
   opacity: 0;
-  transition: 1s;
+  transition: 0.6s;
   text-shadow: 0 0 10px black;
 }
 
@@ -82,7 +120,7 @@ body {
   bottom: 0;
   width: 100%;
   height: 4px;
-  background: #333;
+  background: #222;
 }
 
 #progress {
@@ -95,90 +133,84 @@ body {
 
 <body>
 
-<!-- HERO -->
-<div id="hero">
-  <button id="playBtn" onclick="startMovie()">▶ Play</button>
-</div>
+<!-- NETFLIX INTRO -->
+<div id="intro">NETFLIX</div>
 
-<!-- LOADING -->
-<div id="loading">Preparing your story… 🎬</div>
+<!-- PROFILE SCREEN -->
+<div id="profiles">
+  <h2>Who's watching?</h2>
+
+  <div class="profile-container">
+
+    <!-- YOUR PROFILE -->
+    <div class="profile" onclick="startMovie()">
+      <img src="https://i.imgur.com/1X6sZ4C.png">
+      <div class="name">Dp</div>
+    </div>
+
+    <!-- HER PROFILE -->
+    <div class="profile" onclick="startMovie()">
+      <img src="https://i.imgur.com/8Km9tLL.png">
+      <div class="name">Meenu</div>
+    </div>
+
+        <div class="profile" onclick="startMovie()">
+      <img src="https://i.imgur.com/8Km9tLL.png">
+      <div class="name">Kids</div>
+    </div>
+
+  </div>
+</div>
 
 <!-- PLAYER -->
 <div id="player">
   <video id="video" muted playsinline></video>
+  <div id="overlay"></div>
   <div id="msg"></div>
   <div id="progressBox"><div id="progress"></div></div>
 </div>
 
-<!-- BACKGROUND MUSIC -->
+<!-- MUSIC -->
 <audio id="bgm" src="music.mp3" preload="auto"></audio>
 
 <script>
 
-// 🎬 YOUR 6 VIDEO STORY
+// 🎬 SCENES (YOUR 6 VIDEOS)
 let scenes = [
-
-{
-  text: "Some people just come into life…",
-  src: "video1.mp4"
-},
-
-{
-  text: "And slowly become important…",
-  src: "video2.mp4"
-},
-
-{
-  text: "Without even realizing it ❤️",
-  src: "video3.mp4"
-},
-
-{
-  text: "And today… is all about you 🎂",
-  src: "video4.mp4"
-},
-
-{
-  text: "🎉 HAPPY BIRTHDAY MEENU 🎉",
-  src: "video5.mp4"
-},
-
-{
-  text: "I’m really glad I know you 💖",
-  src: "video6.mp4"
-}
-
+{ text: "Some people just come into life…", src: "video1.mp4" },
+{ text: "And slowly become special…", src: "video2.mp4" },
+{ text: "Without even realizing it ❤️", src: "video3.mp4" },
+{ text: "And today… is about you 🎂", src: "video4.mp4" },
+{ text: "🎉 HAPPY BIRTHDAY MEENU 🎉", src: "video5.mp4" },
+{ text: "I’m really glad I know you 💖", src: "video6.mp4" }
 ];
 
 let i = 0;
 
+/* FLOW */
+setTimeout(() => {
+  intro.style.display = "none";
+  profiles.style.display = "block";
+}, 2500);
+
 function startMovie() {
+  profiles.style.display = "none";
+  player.style.display = "block";
 
-  loading.style.display = "flex";
+  // 🎧 MUSIC FADE IN
+  let music = document.getElementById("bgm");
+  music.volume = 0;
+  music.play().catch(()=>{});
 
-  setTimeout(() => {
-    loading.style.display = "none";
-    hero.style.display = "none";
-    player.style.display = "block";
+  let v = 0;
+  let fade = setInterval(() => {
+    if (v < 0.5) {
+      v += 0.02;
+      music.volume = v;
+    } else clearInterval(fade);
+  }, 200);
 
-    // 🎧 BACKGROUND MUSIC (fade in)
-    let music = document.getElementById("bgm");
-    music.volume = 0;
-    music.play().catch(()=>{});
-
-    let v = 0;
-    let fade = setInterval(() => {
-      if (v < 0.5) {
-        v += 0.02;
-        music.volume = v;
-      } else {
-        clearInterval(fade);
-      }
-    }, 200);
-
-    playScene();
-
-  }, 2000);
+  playScene();
 }
 
 function playScene() {
@@ -187,44 +219,32 @@ function playScene() {
 
   let scene = scenes[i];
 
-  // fade out
-  video.style.opacity = 0;
+  video.src = scene.src;
+  video.muted = true;
+  video.volume = 0;
+
   msg.style.opacity = 0;
 
   setTimeout(() => {
-
-    // 🎥 LOAD VIDEO
-    video.src = scene.src;
-    video.style.opacity = 1;
-
-    // 🔇 FORCE MUTE
-    video.muted = true;
-    video.volume = 0;
-
-    // 💬 SUBTITLE
     msg.innerHTML = scene.text;
     msg.style.opacity = 1;
+  }, 500);
 
-    // 📊 PROGRESS BAR
-    progress.style.width = ((i+1)/scenes.length)*100 + "%";
+  progress.style.width = ((i+1)/scenes.length)*100 + "%";
 
-    // 🎯 BIG MOMENT STYLE
-    if (scene.text.includes("HAPPY BIRTHDAY")) {
-      msg.style.fontSize = "36px";
-    } else {
-      msg.style.fontSize = "26px";
-    }
+  // 🎯 BIG TEXT EFFECT
+  if (scene.text.includes("HAPPY BIRTHDAY")) {
+    msg.style.fontSize = "36px";
+  } else {
+    msg.style.fontSize = "28px";
+  }
 
-    // ▶ PLAY VIDEO
-    video.play().catch(()=>{});
+  video.play().catch(()=>{});
 
-    // ⏭ NEXT WHEN VIDEO ENDS
-    video.onended = () => {
-      i++;
-      playScene();
-    };
-
-  }, 600);
+  video.onended = () => {
+    i++;
+    playScene();
+  };
 }
 
 </script>
