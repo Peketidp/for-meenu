@@ -19,7 +19,6 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: black;
 }
 
 .login-box {
@@ -48,7 +47,6 @@ button {
 #error {
   color: #ff4d4d;
   font-size: 14px;
-  margin-top: 10px;
 }
 
 /* INTRO */
@@ -61,7 +59,6 @@ button {
   align-items: center;
   font-size: 40px;
   color: red;
-  letter-spacing: 3px;
 }
 
 /* PROFILES */
@@ -95,6 +92,7 @@ button {
 
 .profile {
   cursor: pointer;
+  text-align: center;
 }
 
 .profile img {
@@ -129,11 +127,9 @@ button {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(to top, black 20%, transparent 60%),
-    linear-gradient(to right, black 25%, transparent 70%);
+    linear-gradient(to top, black 20%, transparent 60%);
 }
 
-/* SUBTITLE */
 #msg {
   position: absolute;
   bottom: 80px;
@@ -142,7 +138,6 @@ button {
   font-size: 28px;
   opacity: 0;
   transition: 0.6s;
-  text-shadow: 0 0 10px black;
 }
 
 /* PROGRESS */
@@ -159,6 +154,30 @@ button {
   width: 0%;
   background: red;
 }
+
+/* ENDING */
+#ending {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: black;
+  text-align: center;
+  padding-top: 120px;
+}
+
+#ending h1 {
+  font-size: 40px;
+}
+
+#ending p {
+  font-size: 20px;
+  opacity: 0.8;
+}
+
+#ending button {
+  margin-top: 30px;
+  padding: 12px 25px;
+}
 </style>
 </head>
 
@@ -168,10 +187,8 @@ button {
 <div id="login">
   <div class="login-box">
     <h2>Sign In</h2>
-
     <input type="text" value="meenu.dp0404@gmail.com" readonly><br>
     <input type="password" id="pass" placeholder="Enter Password"><br>
-
     <button onclick="checkLogin()">Sign In</button>
     <div id="error"></div>
   </div>
@@ -187,13 +204,18 @@ button {
   <div class="profile-container">
 
     <div class="profile" onclick="startMovie()">
-      <img src="https://i.imgur.com/1X6sZ4C.png">
-      <div class="name">Dp</div>
+      <img src="https://i.imgur.com/2yaf2wb.png">
+      <div class="name">Dp 🕷️</div>
     </div>
 
     <div class="profile" onclick="startMovie()">
       <img src="https://i.imgur.com/8Km9tLL.png">
-      <div class="name">Meenu</div>
+      <div class="name">Meenu ❤️</div>
+    </div>
+
+    <div class="profile" onclick="startMovie()">
+      <img src="https://i.imgur.com/0y0y0y0.png">
+      <div class="name">Kids 👶</div>
     </div>
 
   </div>
@@ -207,19 +229,34 @@ button {
   <div id="progressBox"><div id="progress"></div></div>
 </div>
 
-<!-- MUSIC -->
-<audio id="bgm" src="music.mp3" preload="auto"></audio>
+<!-- ENDING -->
+<div id="ending">
+  <h1>🎂 Happy Birthday Meenu 💖</h1>
+  <p>
+    hey...<br><br>
+    Are you awake? <br><br>
+    I was thinking something <br><br>
+    I hope this made you smile 😊<br><br>
+    You deserve everything beautiful 🌸<br><br>
+    Somepeople become imp slowly...🐣 <br><br>
+    And you did that😁 <br><br>
+    Today is special right?
+    Happy Birthday Meenu... ❤️
+  </p>
+  <button onclick="location.reload()">▶ Watch Again</button>
+</div>
+
+<audio id="bgm" src="music.mp3"></audio>
 
 <script>
 
-// LOGIN LOGIC WITH HINTS
+// LOGIN
 let attempts = 0;
 
 function checkLogin() {
-  let p = document.getElementById("pass").value;
+  let p = pass.value;
 
   if (p === "Dp@0404") {
-
     error.innerHTML = "Knew you'd get it 😉";
 
     setTimeout(() => {
@@ -234,26 +271,16 @@ function checkLogin() {
     }, 800);
 
   } else {
-
     attempts++;
 
-    if (attempts === 1) {
-      error.innerHTML = "Wrong password 🙈 try again";
-    }
-    else if (attempts === 2) {
-      error.innerHTML = "Hmm… you should know this 😏";
-    }
-    else if (attempts === 3) {
-      error.innerHTML = "Hint: something special + date 😉";
-    }
-    else {
-      error.innerHTML = "Okay fine… it’s Dp@0404 😄";
-    }
+    if (attempts === 1) error.innerHTML = "Wrong password 🙈";
+    else if (attempts === 2) error.innerHTML = "Think again 😏";
+    else if (attempts === 3) error.innerHTML = "Hint: special + date 😉";
+    else error.innerHTML = "Catch me if you can 😄";
   }
 }
 
-// ENTER KEY SUPPORT
-document.getElementById("pass").addEventListener("keypress", function(e) {
+pass.addEventListener("keypress", e => {
   if (e.key === "Enter") checkLogin();
 });
 
@@ -273,31 +300,37 @@ function startMovie() {
   profiles.style.display = "none";
   player.style.display = "block";
 
-  let music = document.getElementById("bgm");
+  let music = bgm;
   music.volume = 0;
-
   music.play().catch(()=>{});
 
   let v = 0;
-  let fade = setInterval(() => {
-    if (v < 0.5) {
-      v += 0.02;
-      music.volume = v;
-    } else clearInterval(fade);
-  }, 200);
+  let fade = setInterval(()=>{
+    if(v<0.5){ v+=0.02; music.volume=v;}
+    else clearInterval(fade);
+  },200);
 
   playScene();
 }
 
 function playScene() {
 
-  if (i >= scenes.length) return;
+  if (i >= scenes.length) {
+    video.style.opacity = 0;
+    msg.style.opacity = 0;
+
+    setTimeout(() => {
+      player.style.display = "none";
+      ending.style.display = "block";
+    }, 1500);
+
+    return;
+  }
 
   let scene = scenes[i];
 
   video.src = scene.src;
   video.muted = true;
-  video.volume = 0;
 
   msg.style.opacity = 0;
 
@@ -308,13 +341,7 @@ function playScene() {
 
   progress.style.width = ((i+1)/scenes.length)*100 + "%";
 
-  if (scene.text.includes("HAPPY BIRTHDAY")) {
-    msg.style.fontSize = "36px";
-  } else {
-    msg.style.fontSize = "28px";
-  }
-
-  video.play().catch(()=>{});
+  video.play();
 
   video.onended = () => {
     i++;
