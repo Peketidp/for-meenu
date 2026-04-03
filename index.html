@@ -3,70 +3,77 @@
 <head>
 <title>For Meenu 🎬</title>
 
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
 <style>
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
+  font-family: 'Poppins', sans-serif;
   background: black;
   color: white;
   overflow: hidden;
 }
 
-/* NAV */
-#nav {
-  padding: 15px 30px;
-  font-size: 26px;
-  font-weight: bold;
-  color: red;
-}
-
 /* HERO */
 #hero {
   height: 100vh;
-  background: url("bg.jpg") center/cover no-repeat;
+  background:
+    linear-gradient(to top, black 20%, transparent 60%),
+    linear-gradient(to right, black 30%, transparent 70%),
+    url("bg.jpg") center/cover no-repeat;
   display: flex;
-  flex-direction: column;
   justify-content: center;
-  padding: 50px;
-  background-color: rgba(0,0,0,0.7);
-  background-blend-mode: darken;
-}
-
-#title {
-  font-size: 55px;
-  font-weight: bold;
+  align-items: center;
 }
 
 #playBtn {
-  margin-top: 20px;
-  padding: 12px 25px;
-  font-size: 18px;
+  padding: 15px 30px;
+  font-size: 20px;
   background: white;
-  color: black;
   border: none;
   cursor: pointer;
+  border-radius: 5px;
+}
+
+/* LOADING */
+#loading {
+  position: fixed;
+  inset: 0;
+  background: black;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  font-size: 22px;
 }
 
 /* PLAYER */
 #player {
   display: none;
+  position: relative;
   height: 100vh;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  text-align: center;
+  width: 100%;
 }
 
-/* SUBTITLE STYLE */
+/* VIDEO */
+#video {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+
+/* SUBTITLE */
 #msg {
   position: absolute;
   bottom: 80px;
-  font-size: 26px;
-  max-width: 80%;
+  width: 100%;
   text-align: center;
+  font-size: 26px;
   opacity: 0;
   transition: 1s;
-  text-shadow: 0 0 10px rgba(0,0,0,0.8);
+  text-shadow: 0 0 10px black;
 }
 
 /* PROGRESS */
@@ -83,67 +90,64 @@ body {
   width: 0%;
   background: red;
 }
-
-/* SPOTLIGHT */
-#spotlight {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.85);
-  opacity: 0;
-  transition: 1s;
-  pointer-events: none;
-}
-
-/* LOADING */
-#loading {
-  position: fixed;
-  inset: 0;
-  background: black;
-  display: none;
-  justify-content: center;
-  align-items: center;
-  font-size: 22px;
-}
 </style>
 </head>
 
 <body>
 
-<div id="nav">NETFLIX</div>
-
+<!-- HERO -->
 <div id="hero">
-  <div id="title">Meenu ❤️</div>
   <button id="playBtn" onclick="startMovie()">▶ Play</button>
 </div>
 
+<!-- LOADING -->
 <div id="loading">Preparing your story… 🎬</div>
 
+<!-- PLAYER -->
 <div id="player">
+  <video id="video" muted playsinline></video>
   <div id="msg"></div>
   <div id="progressBox"><div id="progress"></div></div>
 </div>
 
-<div id="spotlight"></div>
-
-<audio id="bgm" src="music.mp3"></audio>
+<!-- BACKGROUND MUSIC -->
+<audio id="bgm" src="music.mp3" preload="auto"></audio>
 
 <script>
 
-let lines = [
-"Some stories feel normal…",
-"But some feel different…",
-"And this one… is yours 🎂",
-"",
-"I didn’t want to just send a message…",
-"So I made this…",
-"",
-"Because you matter ❤️",
-"",
-"🎉 HAPPY BIRTHDAY MEENU 🎉",
-"",
-"You make things better just by being there 😉",
-"",
-"And I’m really glad I know you 💖"
+// 🎬 YOUR 6 VIDEO STORY
+let scenes = [
+
+{
+  text: "Some people just come into life…",
+  src: "video1.mp4"
+},
+
+{
+  text: "And slowly become important…",
+  src: "video2.mp4"
+},
+
+{
+  text: "Without even realizing it ❤️",
+  src: "video3.mp4"
+},
+
+{
+  text: "And today… is all about you 🎂",
+  src: "video4.mp4"
+},
+
+{
+  text: "🎉 HAPPY BIRTHDAY MEENU 🎉",
+  src: "video5.mp4"
+},
+
+{
+  text: "I’m really glad I know you 💖",
+  src: "video6.mp4"
+}
+
 ];
 
 let i = 0;
@@ -155,9 +159,9 @@ function startMovie() {
   setTimeout(() => {
     loading.style.display = "none";
     hero.style.display = "none";
-    player.style.display = "flex";
+    player.style.display = "block";
 
-    // 🎧 music fade in
+    // 🎧 BACKGROUND MUSIC (fade in)
     let music = document.getElementById("bgm");
     music.volume = 0;
     music.play().catch(()=>{});
@@ -167,38 +171,60 @@ function startMovie() {
       if (v < 0.5) {
         v += 0.02;
         music.volume = v;
-      } else clearInterval(fade);
+      } else {
+        clearInterval(fade);
+      }
     }, 200);
 
-    playStory();
+    playScene();
 
   }, 2000);
 }
 
-function playStory() {
+function playScene() {
 
-  if (i < lines.length) {
+  if (i >= scenes.length) return;
 
-    msg.style.opacity = 0;
+  let scene = scenes[i];
 
-    setTimeout(() => {
+  // fade out
+  video.style.opacity = 0;
+  msg.style.opacity = 0;
 
-      msg.innerHTML = lines[i];
-      msg.style.opacity = 1;
+  setTimeout(() => {
 
-      progress.style.width = ((i+1)/lines.length)*100 + "%";
+    // 🎥 LOAD VIDEO
+    video.src = scene.src;
+    video.style.opacity = 1;
 
-      // 💡 spotlight during final reveal
-      if (lines[i].includes("HAPPY BIRTHDAY")) {
-        spotlight.style.opacity = 1;
-        msg.style.fontSize = "34px";
-      }
+    // 🔇 FORCE MUTE
+    video.muted = true;
+    video.volume = 0;
 
+    // 💬 SUBTITLE
+    msg.innerHTML = scene.text;
+    msg.style.opacity = 1;
+
+    // 📊 PROGRESS BAR
+    progress.style.width = ((i+1)/scenes.length)*100 + "%";
+
+    // 🎯 BIG MOMENT STYLE
+    if (scene.text.includes("HAPPY BIRTHDAY")) {
+      msg.style.fontSize = "36px";
+    } else {
+      msg.style.fontSize = "26px";
+    }
+
+    // ▶ PLAY VIDEO
+    video.play().catch(()=>{});
+
+    // ⏭ NEXT WHEN VIDEO ENDS
+    video.onended = () => {
       i++;
-      setTimeout(playStory, 2600);
+      playScene();
+    };
 
-    }, 600);
-  }
+  }, 600);
 }
 
 </script>
