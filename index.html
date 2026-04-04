@@ -228,7 +228,7 @@ button {
     </div>
 
     <div class="profile" onclick="startMovie()">
-      <img src="https://i.imgur.com/YZ6XG6L.png">
+     <div style="font-size:70px;">👶</div>
       <div class="name">Kids</div>
     </div>
 
@@ -314,14 +314,8 @@ function startMovie() {
   player.style.display = "block";
 
   let music = bgm;
-  music.volume = 0;
+  music.volume = 0.4;
   music.play().catch(()=>{});
-
-  let v = 0;
-  let fade = setInterval(()=>{
-    if(v<0.5){ v+=0.02; music.volume=v;}
-    else clearInterval(fade);
-  },200);
 
   playScene();
 }
@@ -329,11 +323,6 @@ function startMovie() {
 function playScene() {
 
   if (i >= scenes.length) {
-
-    let fadeOut = setInterval(()=>{
-      if(bgm.volume>0.05){ bgm.volume -=0.05;}
-      else clearInterval(fadeOut);
-    },200);
 
     video.style.opacity = 0;
     msg.style.opacity = 0;
@@ -366,11 +355,9 @@ function playScene() {
     if (scene.text.includes("HAPPY BIRTHDAY")) {
       msg.style.fontSize = "36px";
       msg.style.textShadow = "0 0 20px rgba(255,255,255,0.8)";
-      bgm.volume = 0.7;
     } else {
       msg.style.fontSize = "26px";
       msg.style.textShadow = "0 0 10px black";
-      bgm.volume = 0.4;
     }
 
     video.play();
