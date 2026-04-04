@@ -13,45 +13,10 @@ body {
   color: white;
 }
 
-/* APP SCREEN */
-#apps {
-  height: 100vh;
-  padding: 20px;
-  background: black;
-}
-
-.apps-header {
-  font-size: 24px;
-  margin-bottom: 20px;
-}
-
-.apps-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 25px;
-}
-
-.app {
-  text-align: center;
-  cursor: pointer;
-}
-
-.app-icon {
-  width: 60px;
-  height: 60px;
-  border-radius: 14px;
-}
-
-.app p {
-  font-size: 13px;
-  margin-top: 6px;
-  color: #ccc;
-}
-
 /* LOGIN */
 #login {
-  display: none;
   height: 100vh;
+  display: flex;
   justify-content: center;
   align-items: center;
 }
@@ -79,7 +44,10 @@ button {
   cursor: pointer;
 }
 
-#error { color: #ff4d4d; }
+#error {
+  color: #ff4d4d;
+  font-size: 14px;
+}
 
 /* INTRO */
 #intro {
@@ -89,10 +57,7 @@ button {
   background: black;
   justify-content: center;
   align-items: center;
-}
-
-.netflix-logo {
-  font-size: 60px;
+  font-size: 40px;
   color: red;
 }
 
@@ -100,9 +65,9 @@ button {
 #profiles {
   display: none;
   height: 100vh;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  text-align: center;
+  padding-top: 100px;
+  position: relative;
 
   background:
     linear-gradient(to top, black 30%, transparent 80%),
@@ -110,66 +75,81 @@ button {
     url("bg.jpg") center/cover no-repeat;
 }
 
+#profiles::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  backdrop-filter: blur(8px);
+  z-index: -1;
+}
+
 .profile-container {
   display: flex;
+  justify-content: center;
   gap: 40px;
-  margin-top: 30px;
+  margin-top: 50px;
 }
 
 .profile {
-  text-align: center;
   cursor: pointer;
+  text-align: center;
 }
 
 .profile img {
   width: 110px;
   height: 110px;
   border-radius: 10px;
+  transition: 0.3s;
 }
 
-.name { margin-top: 10px; }
+.profile:hover img {
+  transform: scale(1.1);
+}
+
+.name {
+  margin-top: 10px;
+}
 
 /* PLAYER */
 #player {
   display: none;
   position: relative;
   height: 100vh;
-  background: black;
 }
 
-/* ✅ VIDEO FIX (NO ZOOM) */
 #video {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   width: 100%;
   height: 100%;
-  object-fit: contain;
-  background: black;
+  object-fit: cover;
+  opacity: 1;
+  transition: opacity 0.6s ease;
 }
 
 #overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, black 20%, transparent 60%);
+  background:
+    linear-gradient(to top, black 20%, transparent 60%);
 }
 
-/* ✅ SUBTITLE FIX */
+/* SUBTITLE */
 #msg {
   position: absolute;
-  bottom: 150px;
+  bottom: 120px;
   width: 100%;
   text-align: center;
   font-size: 26px;
   opacity: 0;
-  transition: 0.6s;
-  padding: 0 12px;
+  transform: scale(0.95);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  text-shadow: 0 0 10px black;
+  padding: 0 15px;
 }
 
-@media (max-width:600px){
+/* MOBILE FIX */
+@media (max-width: 600px) {
   #msg {
-    bottom: 170px;
+    bottom: 140px;
     font-size: 20px;
   }
 }
@@ -217,47 +197,26 @@ button {
 
 <body>
 
-<!-- APP SCREEN -->
-<div id="apps">
-  <div class="apps-header">Apps</div>
-
-  <div class="apps-grid">
-    <div class="app" onclick="openApp()">
-      <img src="netflix.png" class="app-icon">
-      <p>Netflix</p>
-    </div>
-    <div class="app">
-      <img src="prime.png" class="app-icon">
-      <p>Prime Video</p>
-    </div>
-    <div class="app">
-      <img src="disney.png" class="app-icon">
-      <p>Disney+</p>
-    </div>
-  </div>
-</div>
-
 <!-- LOGIN -->
 <div id="login">
   <div class="login-box">
     <h2>Sign In</h2>
     <input type="text" value="meenu.dp0404@gmail.com" readonly><br>
-    <input type="password" id="pass"><br>
+    <input type="password" id="pass" placeholder="Enter Password"><br>
     <button onclick="checkLogin()">Sign In</button>
     <div id="error"></div>
   </div>
 </div>
 
 <!-- INTRO -->
-<div id="intro">
-  <div class="netflix-logo">NETFLIX</div>
-</div>
+<div id="intro">NETFLIX</div>
 
 <!-- PROFILES -->
 <div id="profiles">
   <h2>Who's watching?</h2>
 
   <div class="profile-container">
+
     <div class="profile" onclick="startMovie()">
       <img src="https://i.imgur.com/2yaf2wb.png">
       <div class="name">Dp 🕷️</div>
@@ -269,9 +228,10 @@ button {
     </div>
 
     <div class="profile" onclick="startMovie()">
-      <div style="font-size:70px;">👶</div>
+      <img src="https://i.imgur.com/YZ6XG6L.png">
       <div class="name">Kids</div>
     </div>
+
   </div>
 </div>
 
@@ -288,8 +248,8 @@ button {
   <h1>🎂 Happy Birthday Meenu 💖</h1>
   <p>
     hey...<br><br>
-    Are you awake? 🌅<br><br>
-    I was thinking about you…<br><br>
+    Are you awake? <br><br>
+    I was thinking something <br><br>
     I hope this made you smile 😊<br><br>
     You deserve everything beautiful 🌸<br><br>
     Some people become important slowly... 🐣<br><br>
@@ -303,11 +263,7 @@ button {
 
 <script>
 
-function openApp(){
-  apps.style.display="none";
-  login.style.display="flex";
-}
-
+// LOGIN
 let attempts = 0;
 
 function checkLogin() {
@@ -322,7 +278,7 @@ function checkLogin() {
 
       setTimeout(() => {
         intro.style.display = "none";
-        profiles.style.display = "flex";
+        profiles.style.display = "block";
       }, 2000);
 
     }, 800);
@@ -341,13 +297,14 @@ pass.addEventListener("keypress", e => {
   if (e.key === "Enter") checkLogin();
 });
 
+// SCENES
 let scenes = [
-{ text:"Hey… are you awake? 🌅", src:"video1.mp4"},
-{ text:"Some people just come into life…", src:"video2.mp4"},
-{ text:"And slowly become special…", src:"video3.mp4"},
-{ text:"Without even realizing it ❤️", src:"video4.mp4"},
-{ text:"🎉 HAPPY BIRTHDAY MEENU 🎉", src:"video5.mp4"},
-{ text:"I’m really glad I know you 💖", src:"video6.mp4"}
+{ text: "Some people just come into life…", src: "video1.mp4" },
+{ text: "And slowly become special…", src: "video2.mp4" },
+{ text: "Without even realizing it ❤️", src: "video3.mp4" },
+{ text: "And today… is about you 🎂", src: "video4.mp4" },
+{ text: "🎉 HAPPY BIRTHDAY MEENU 🎉", src: "video5.mp4" },
+{ text: "I’m really glad I know you 💖", src: "video6.mp4" }
 ];
 
 let i = 0;
@@ -356,28 +313,74 @@ function startMovie() {
   profiles.style.display = "none";
   player.style.display = "block";
 
-  bgm.volume = 0.4;
-  bgm.play();
+  let music = bgm;
+  music.volume = 0;
+  music.play().catch(()=>{});
+
+  let v = 0;
+  let fade = setInterval(()=>{
+    if(v<0.5){ v+=0.02; music.volume=v;}
+    else clearInterval(fade);
+  },200);
 
   playScene();
 }
 
 function playScene() {
+
   if (i >= scenes.length) {
-    player.style.display = "none";
-    ending.style.display = "block";
+
+    let fadeOut = setInterval(()=>{
+      if(bgm.volume>0.05){ bgm.volume -=0.05;}
+      else clearInterval(fadeOut);
+    },200);
+
+    video.style.opacity = 0;
+    msg.style.opacity = 0;
+
+    setTimeout(() => {
+      player.style.display = "none";
+      ending.style.display = "block";
+    }, 1500);
+
     return;
   }
 
-  let s = scenes[i];
+  let scene = scenes[i];
 
-  video.src = s.src;
-  msg.innerHTML = s.text;
-  msg.style.opacity = 1;
-  progress.style.width = ((i+1)/scenes.length)*100 + "%";
+  video.style.opacity = 0;
+  msg.style.opacity = 0;
+  msg.style.transform = "translateY(10px) scale(0.95)";
 
-  video.play();
-  video.onended = () => { i++; playScene(); };
+  setTimeout(() => {
+
+    video.src = scene.src;
+    video.style.opacity = 1;
+
+    msg.innerHTML = scene.text;
+    msg.style.opacity = 1;
+    msg.style.transform = "translateY(0px) scale(1)";
+
+    progress.style.width = ((i+1)/scenes.length)*100 + "%";
+
+    if (scene.text.includes("HAPPY BIRTHDAY")) {
+      msg.style.fontSize = "36px";
+      msg.style.textShadow = "0 0 20px rgba(255,255,255,0.8)";
+      bgm.volume = 0.7;
+    } else {
+      msg.style.fontSize = "26px";
+      msg.style.textShadow = "0 0 10px black";
+      bgm.volume = 0.4;
+    }
+
+    video.play();
+
+    video.onended = () => {
+      i++;
+      playScene();
+    };
+
+  }, 600);
 }
 
 </script>
