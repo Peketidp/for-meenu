@@ -12,7 +12,101 @@ body {
   background: black;
   color: white;
 }
+/* ===== APP SCREEN (REAL PHONE STYLE) ===== */
+#apps {
+  height: 100vh;
+  padding: 20px;
+  background: black;
+}
 
+.apps-header {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.apps-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 25px;
+}
+
+.app {
+  text-align: center;
+  cursor: pointer;
+}
+
+.app-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 14px;
+  object-fit: cover;
+}
+
+.app p {
+  font-size: 13px;
+  margin-top: 6px;
+  color: #ccc;
+}
+
+.app:active {
+  transform: scale(0.9);
+}
+
+/* ===== LOGIN ===== */
+#login {
+  display: none;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-box {
+  background: rgba(0,0,0,0.8);
+  padding: 30px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+input {
+  width: 250px;
+  padding: 10px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 5px;
+}
+
+button {
+  padding: 10px 20px;
+  background: red;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+#error { color: #ff4d4d; }
+
+/* ===== INTRO ===== */
+#intro {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: black;
+  justify-content: center;
+  align-items: center;
+}
+
+.netflix-logo {
+  font-size: 60px;
+  color: red;
+  animation: zoom 2s ease;
+}
+
+@keyframes zoom {
+  from { transform: scale(0.5); opacity: 0; }
+  to { transform: scale(1.2); opacity: 1; }
+}
+  
+  
 /* LOGIN */
 #login {
   height: 100vh;
@@ -65,9 +159,12 @@ button {
 #profiles {
   display: none;
   height: 100vh;
-  text-align: center;
-  padding-top: 100px;
   position: relative;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;   /* vertical center */
+  align-items: center;       /* horizontal center */
 
   background:
     linear-gradient(to top, black 30%, transparent 80%),
@@ -87,7 +184,7 @@ button {
   display: flex;
   justify-content: center;
   gap: 40px;
-  margin-top: 50px;
+  margin-top: 30px;
 }
 
 .profile {
@@ -196,7 +293,31 @@ button {
 </head>
 
 <body>
+<!-- APP SCREEN -->
+<div id="apps">
+  <div class="apps-header">Apps</div>
 
+  <div class="apps-grid">
+
+    <div class="app" onclick="openApp()">
+      <img src="netflix.png" class="app-icon">
+      <p>Netflix</p>
+    </div>
+
+    <div class="app">
+      <img src="prime.png" class="app-icon">
+      <p>Prime Video</p>
+    </div>
+
+    <div class="app">
+      <img src="disney.png" class="app-icon">
+      <p>Disney+</p>
+    </div>
+
+  </div>
+</div>
+  
+  
 <!-- LOGIN -->
 <div id="login">
   <div class="login-box">
@@ -209,7 +330,10 @@ button {
 </div>
 
 <!-- INTRO -->
-<div id="intro">NETFLIX</div>
+<!-- INTRO -->
+<div id="intro">
+  <div class="netflix-logo">NETFLIX</div>
+</div>
 
 <!-- PROFILES -->
 <div id="profiles">
