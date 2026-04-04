@@ -85,26 +85,7 @@ button {
 
 #error { color: #ff4d4d; }
 
-/* ===== INTRO ===== */
-#intro {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: black;
-  justify-content: center;
-  align-items: center;
-}
 
-.netflix-logo {
-  font-size: 60px;
-  color: red;
-  animation: zoom 2s ease;
-}
-
-@keyframes zoom {
-  from { transform: scale(0.5); opacity: 0; }
-  to { transform: scale(1.2); opacity: 1; }
-}
   
   
 /* LOGIN */
@@ -143,7 +124,7 @@ button {
   font-size: 14px;
 }
 
-/* INTRO */
+/* ===== INTRO ===== */
 #intro {
   display: none;
   position: fixed;
@@ -151,8 +132,17 @@ button {
   background: black;
   justify-content: center;
   align-items: center;
-  font-size: 40px;
+}
+
+.netflix-logo {
+  font-size: 60px;
   color: red;
+  animation: zoom 2s ease;
+}
+
+@keyframes zoom {
+  from { transform: scale(0.5); opacity: 0; }
+  to { transform: scale(1.2); opacity: 1; }
 }
 
 /* PROFILES */
