@@ -13,10 +13,49 @@ body {
   color: white;
 }
 
+/* APP SCREEN */
+#apps {
+  height: 100vh;
+  background: black;
+  text-align: center;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.apps-container {
+  display: flex;
+  gap: 40px;
+  margin-top: 30px;
+}
+
+.app {
+  cursor: pointer;
+}
+
+.logo {
+  width: 80px;
+  height: 80px;
+  border-radius: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 35px;
+  font-weight: bold;
+}
+
+.netflix { background: red; }
+.prime { background: #00A8E1; }
+.disney { background: #113CCF; }
+
+.app:hover { transform: scale(1.1); }
+
 /* LOGIN */
 #login {
+  display: none;
   height: 100vh;
-  display: flex;
   justify-content: center;
   align-items: center;
 }
@@ -44,10 +83,7 @@ button {
   cursor: pointer;
 }
 
-#error {
-  color: #ff4d4d;
-  font-size: 14px;
-}
+#error { color: #ff4d4d; }
 
 /* INTRO */
 #intro {
@@ -61,13 +97,10 @@ button {
   color: red;
 }
 
-/* PROFILES (CENTERED) */
+/* PROFILES */
 #profiles {
   display: none;
   height: 100vh;
-  position: relative;
-
-  display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -78,14 +111,6 @@ button {
     url("bg.jpg") center/cover no-repeat;
 }
 
-#profiles::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  backdrop-filter: blur(8px);
-  z-index: -1;
-}
-
 .profile-container {
   display: flex;
   gap: 40px;
@@ -93,24 +118,17 @@ button {
 }
 
 .profile {
-  cursor: pointer;
   text-align: center;
+  cursor: pointer;
 }
 
 .profile img {
   width: 110px;
   height: 110px;
   border-radius: 10px;
-  transition: 0.3s;
 }
 
-.profile:hover img {
-  transform: scale(1.1);
-}
-
-.name {
-  margin-top: 10px;
-}
+.name { margin-top: 10px; }
 
 /* PLAYER */
 #player {
@@ -123,7 +141,6 @@ button {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: opacity 0.6s ease;
 }
 
 #overlay {
@@ -140,17 +157,11 @@ button {
   text-align: center;
   font-size: 26px;
   opacity: 0;
-  transform: scale(0.95);
-  transition: opacity 0.6s ease, transform 0.6s ease;
-  text-shadow: 0 0 10px black;
-  padding: 0 15px;
+  transition: 0.6s;
 }
 
-@media (max-width: 600px) {
-  #msg {
-    bottom: 140px;
-    font-size: 20px;
-  }
+@media (max-width:600px){
+  #msg { bottom:140px; font-size:20px; }
 }
 
 /* PROGRESS */
@@ -177,24 +188,29 @@ button {
   text-align: center;
   padding-top: 120px;
 }
-
-#ending h1 {
-  font-size: 40px;
-}
-
-#ending p {
-  font-size: 20px;
-  opacity: 0.8;
-}
-
-#ending button {
-  margin-top: 30px;
-  padding: 12px 25px;
-}
 </style>
 </head>
 
 <body>
+
+<!-- APP SCREEN -->
+<div id="apps">
+  <h2>Select App</h2>
+  <div class="apps-container">
+    <div class="app" onclick="openApp('netflix')">
+      <div class="logo netflix">N</div>
+      <p>Netflix</p>
+    </div>
+    <div class="app">
+      <div class="logo prime">P</div>
+      <p>Prime</p>
+    </div>
+    <div class="app">
+      <div class="logo disney">D</div>
+      <p>Disney+</p>
+    </div>
+  </div>
+</div>
 
 <!-- LOGIN -->
 <div id="login">
@@ -213,24 +229,19 @@ button {
 <!-- PROFILES -->
 <div id="profiles">
   <h2>Who's watching?</h2>
-
   <div class="profile-container">
-
     <div class="profile" onclick="startMovie()">
       <img src="https://i.imgur.com/2yaf2wb.png">
       <div class="name">Dp 🕷️</div>
     </div>
-
     <div class="profile" onclick="startMovie()">
       <img src="https://i.imgur.com/8Km9tLL.png">
       <div class="name">Meenu ❤️</div>
     </div>
-
     <div class="profile" onclick="startMovie()">
       <div style="font-size:70px;">👶</div>
       <div class="name">Kids</div>
     </div>
-
   </div>
 </div>
 
@@ -245,128 +256,74 @@ button {
 <!-- ENDING -->
 <div id="ending">
   <h1>🎂 Happy Birthday Meenu 💖</h1>
-  <p>
-    hey...<br><br>
-    Are you awake? 🌅<br><br>
-    I was thinking about you…<br><br>
-    I hope this made you smile 😊<br><br>
-    You deserve everything beautiful 🌸<br><br>
-    Some people become important slowly... 🐣<br><br>
-    And you did that 😄<br><br>
-    Happy Birthday Meenu ❤️
-  </p>
-  <button onclick="location.reload()">▶ Watch Again</button>
+  <p>Hope this made you smile 😊</p>
+  <button onclick="location.reload()">▶ Replay</button>
 </div>
 
 <audio id="bgm" src="music.mp3"></audio>
 
 <script>
 
-// LOGIN
-let attempts = 0;
-
-function checkLogin() {
-  let p = pass.value;
-
-  if (p === "Dp@0404") {
-    error.innerHTML = "Knew you'd get it 😉";
-
-    setTimeout(() => {
-      login.style.display = "none";
-      intro.style.display = "flex";
-
-      setTimeout(() => {
-        intro.style.display = "none";
-        profiles.style.display = "flex";
-      }, 2000);
-
-    }, 800);
-
-  } else {
-    attempts++;
-
-    if (attempts === 1) error.innerHTML = "Wrong password 🙈";
-    else if (attempts === 2) error.innerHTML = "Think again 😏";
-    else if (attempts === 3) error.innerHTML = "Hint: special + date 😉";
-    else error.innerHTML = "Catch me if you can 😄";
+function openApp(app){
+  if(app==="netflix"){
+    apps.style.display="none";
+    login.style.display="flex";
   }
 }
 
-pass.addEventListener("keypress", e => {
-  if (e.key === "Enter") checkLogin();
+let attempts=0;
+function checkLogin(){
+  if(pass.value==="Dp@0404"){
+    login.style.display="none";
+    intro.style.display="flex";
+    setTimeout(()=>{
+      intro.style.display="none";
+      profiles.style.display="flex";
+    },2000);
+  } else {
+    attempts++;
+    error.innerHTML = attempts<3 ? "Try again 😄" : "Hint: Dp@0404";
+  }
+}
+
+pass.addEventListener("keypress",e=>{
+  if(e.key==="Enter") checkLogin();
 });
 
-// SCENES
-let scenes = [
-{ text: "Hey… are you awake? 🌅", src: "video1.mp4" },
-{ text: "Some people just come into life…", src: "video2.mp4" },
-{ text: "And slowly become special…", src: "video3.mp4" },
-{ text: "Without even realizing it ❤️", src: "video4.mp4" },
-{ text: "🎉 HAPPY BIRTHDAY MEENU 🎉", src: "video5.mp4" },
-{ text: "I’m really glad I know you 💖", src: "video6.mp4" }
+let scenes=[
+{ text:"Hey… are you awake? 🌅", src:"video1.mp4"},
+{ text:"Some people just come into life…", src:"video2.mp4"},
+{ text:"And slowly become special…", src:"video3.mp4"},
+{ text:"Without even realizing it ❤️", src:"video4.mp4"},
+{ text:"🎉 HAPPY BIRTHDAY MEENU 🎉", src:"video5.mp4"},
+{ text:"I’m really glad I know you 💖", src:"video6.mp4"}
 ];
 
-let i = 0;
+let i=0;
 
-function startMovie() {
-  profiles.style.display = "none";
-  player.style.display = "block";
-
-  let music = bgm;
-  music.volume = 0.4;
-  music.play().catch(()=>{});
-
+function startMovie(){
+  profiles.style.display="none";
+  player.style.display="block";
+  bgm.volume=0.4;
+  bgm.play();
   playScene();
 }
 
-function playScene() {
-
-  if (i >= scenes.length) {
-
-    video.style.opacity = 0;
-    msg.style.opacity = 0;
-
-    setTimeout(() => {
-      player.style.display = "none";
-      ending.style.display = "block";
-    }, 1500);
-
+function playScene(){
+  if(i>=scenes.length){
+    player.style.display="none";
+    ending.style.display="block";
     return;
   }
 
-  let scene = scenes[i];
+  let s=scenes[i];
+  video.src=s.src;
+  msg.innerHTML=s.text;
+  msg.style.opacity=1;
+  progress.style.width=((i+1)/scenes.length)*100+"%";
 
-  video.style.opacity = 0;
-  msg.style.opacity = 0;
-  msg.style.transform = "translateY(10px) scale(0.95)";
-
-  setTimeout(() => {
-
-    video.src = scene.src;
-    video.style.opacity = 1;
-
-    msg.innerHTML = scene.text;
-    msg.style.opacity = 1;
-    msg.style.transform = "translateY(0px) scale(1)";
-
-    progress.style.width = ((i+1)/scenes.length)*100 + "%";
-
-    if (scene.text.includes("HAPPY BIRTHDAY")) {
-      msg.style.fontSize = "36px";
-      msg.style.textShadow = "0 0 20px rgba(255,255,255,0.8)";
-    } else {
-      msg.style.fontSize = "26px";
-      msg.style.textShadow = "0 0 10px black";
-    }
-
-    video.play();
-
-    video.onended = () => {
-      i++;
-      playScene();
-    };
-
-  }, 600);
+  video.play();
+  video.onended=()=>{ i++; playScene(); };
 }
 
 </script>
